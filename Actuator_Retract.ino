@@ -16,9 +16,13 @@ void loop() {
 
   if (Serial.available() > 0){
     pos = Serial.parseInt();
+    if (pos < 0 || pos > 138){
+      Serial.print("Extension length out of bounds.");
+      break;
+    }
     Serial.print("Extending to ");
     Serial.print(pos);
     Serial.println("mm");
-    act.write(map(pos, 0, 140, 45, 135));
+    act.write(map(pos, 0, 138, 45, 135));
   }
 }
