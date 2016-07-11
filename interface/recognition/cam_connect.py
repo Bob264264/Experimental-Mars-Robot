@@ -6,8 +6,24 @@ cap = cv2.VideoCapture(0)
 while True:
 	ret, frame = cap.read()
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-	cv2.imshow('frame', gray)
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		break
+	boundaries = [
+		([200, 200, 200], [255, 255, 255])
+	]
+
+	# loop over the boundaries
+	for (lower, upper) in boundaries:
+		# create NumPy arrays from the boundaries
+		lower = np.array(lower, dtype = "uint8")
+		upper = np.array(upper, dtype = "uint8")
+
+		# find the colors within the specified boundaries and apply
+		# the mask
+		mask = cv2.inRange(image, lower, upper)
+		output = cv2.bitwise_and(image, image, mask = mask)
+
+		# show the images
+		cv2.imshow("frame", np.hstack([image, output]))
+		if cv2.waitKey(1) & 0xFF == ord('q'):
+			break
 cap.release()
 cv2.destroyAllWindows()
