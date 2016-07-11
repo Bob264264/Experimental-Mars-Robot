@@ -4,11 +4,15 @@ import sys
 master = Tk()
 label = Label(master, text = "Wheel Number")
 label.pack()
-wheel = Entry(master, bd = 10) #Wheel Number
+wheel = Entry(master, bd = 10)
 wheel.pack()
-actuator = Entry(master, bd = 10) #Actuator Letter
+label = Label(master, text = "Actuator Letter")
+label.pack()
+actuator = Entry(master, bd = 10)
 actuator.pack()
-distance = Entry(master, bd = 10) #Actuator Extension/Retraction Distance
+label = Label(master, text = "Distance")
+label.pack()
+distance = Entry(master, bd = 10)
 distance.pack()
 
 
@@ -22,7 +26,7 @@ def receive():
         print("Wheel " + wh + ", Actuator " + act + ", Distance of " + dist + " mm.")
 
 
-button = Button(master, text="Send Command", command = receive)
+button = Button(master, text = "Send Command", command = receive)
 button.pack()
 
 master.mainloop()
