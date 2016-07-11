@@ -1,4 +1,5 @@
 8  - central wheel plate
+8  - end wheel plate
 
 16 - proximal actuator body support side
 8  - proximal actuator body support center
