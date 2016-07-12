@@ -4,9 +4,9 @@ import cv2
 cap = cv2.VideoCapture(0)
 
 while True:
-	frame = cap.read()
+	ret, frame = cap.read()
 	boundaries = [
-		([200, 200, 200], [255, 255, 255])
+		([220, 220, 220], [255, 255, 255])
 	]
 
 	# loop over the boundaries
@@ -21,9 +21,9 @@ while True:
 		output = cv2.bitwise_and(frame, frame, mask = mask)
 
 		# show the images
-		cv2.imshow("frame", np.hstack([frame, output]))
-		if cv2.waitKey(0) & 0xFF == ord('q'):
-			break
-
-cap.release()
-cv2.destroyAllWindows()
+		cv2.namedWindow("Camera", cv2.WINDOW_NORMAL)
+		cv2.resizeWindow("Camera", 1000, 1000)
+		cv2.imshow("Camera", output)
+		if cv2.waitKey(1) == 27:
+			cap.release()
+			cv2.destroyAllWindows()
