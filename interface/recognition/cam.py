@@ -23,7 +23,7 @@ while True:
 		# show the images
 		#cv2.imshow("frame", np.hstack([frame, output]))
 		cv2.imshow("frame", output)
-		if cv2.waitKey(0) == 27:
+		if cv2.waitKey(0) & 0xFF == ord('q'):
 			break
 
 cap.release()
