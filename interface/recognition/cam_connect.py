@@ -19,8 +19,8 @@ while True:
 		# find the colors within the specified boundaries and apply
 		# the mask
 		mask = cv2.inRange(frame, lower, upper)
-		output = cv2.bitwise_and(frame, frame, mask = mask)
-
+		#output = cv2.bitwise_and(frame, frame, mask = mask)
+		output = cv2.bitwise_and(frame, mask = mask)
 		# show the images
 		cv2.imshow("frame", np.hstack([frame, output]))
 		if cv2.waitKey(1) & 0xFF == ord('q'):
