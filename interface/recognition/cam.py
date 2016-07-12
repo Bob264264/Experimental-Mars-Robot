@@ -21,9 +21,9 @@ while True:
 		output = cv2.bitwise_and(frame, frame, mask = mask)
 
 		# show the images
-		cv2.namedWindow("frame", cv2.WINDOW_NORMAL)
-		cv2.imshow("frame", np.hstack([frame, output]))
-		if cv2.waitKey(0) & 0xFF == ord('q'):
+		#cv2.imshow("frame", np.hstack([frame, output]))
+		cv2.imshow("frame", output)
+		if cv2.waitKey(0) == 27:
 			break
 
 cap.release()
