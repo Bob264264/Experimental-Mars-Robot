@@ -1,9 +1,0 @@
-8  - central wheel plate
-8  - end wheel plate
-
-16 - proximal actuator body support side
-8  - proximal actuator body support center
-16 - proximal actuator shaft support side
-8  - proximal actuator shaft support center
-
-24 - distal E connector bracket
