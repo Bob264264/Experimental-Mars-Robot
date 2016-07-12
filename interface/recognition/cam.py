@@ -22,7 +22,7 @@ while True:
 
 		# show the images
 		#cv2.imshow("frame", np.hstack([frame, output]))
-		cv2.imshow("frame", output)
+		cv2.imshow("frame", frame)
 		if cv2.waitKey(0) & 0xFF == ord('q'):
 			break
 
