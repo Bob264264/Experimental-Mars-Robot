@@ -27,6 +27,10 @@ def controlapi():
 				Pool(processes=1).pool.apply_async(rc.movearm, [armmotor[0], armmotor[1]])
 			for pulleymotor in jsonrequest["pulleymotors"]:
 				Pool(processes=1).pool.apply_async(rc.movemass, [pulleymotor[0], pulleymotor[1]])
+		else:
+			pass
+
+		return json.dumps(rc.read_state())
 	except:
 		return "invalid request"
 
