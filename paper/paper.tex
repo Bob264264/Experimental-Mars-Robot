@@ -1,0 +1,117 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{multicol}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\numberwithin{figure}{section}
+
+\begin{document}
+\begin{center}
+\LARGE{Design of an All-Terrain Rover} \\
+\normalsize{New Jersey Governor's School of Engineering and Technology}
+\end{center}
+\begin{multicols}{2}
+\noindent \textsc{Tanishq Aggarwal} \\ tanishq.aggarwal.11@gmail.com \\
+\\ \textsc{William Li} \\ superwilliamli@yahoo.com \\
+\\ \textsc{Abhinav Raghunathan} \\ abhinavr2121@gmail.com
+\columnbreak
+\\ \textsc{Gargi Sadalgekar} \\ g2sadal@gmail.com \\ 
+\\ \textsc{Anita Zirngibl} \\ anita.m.zirngibl@gmail.com 
+\end{multicols}
+\begin{multicols}{2}
+\section*{Abstract}
+Ever since the onset of robotics, humans have been finding increasingly clever ways to traverse harsher terrain. While many types of terrain are served by one of two types of robotic design: the use of wheels or the use of "legs", both approaches are often insufficient for certain types of terrain. This paper describes the design and construction process of a new type of All-Terrain Rover (ATR) that uses a hybrid design using both wheels and "legs". The ATR consists of four wheels with six linear actuators extending radially in a hexagonal pattern from each wheel, as well as two heavy arm-like structures that serve to dynamically alter the center of mass of the vehicle. This design gives the rover significant versatility on terrain due to its adaptability to both flat terrain (which it can traverse via wheels) and rugged terrain (through the flexibility provided by the leg-like actuators.) In addition to the design and construction of this rover, the efficacy of this design over terrain that even traditional wheeled and legged robots was explored and verified.
+\section{Introduction}
+In today’s world, there are two primary methods of robotic locomotion: the use of wheels, and the use of legs, but neither are entirely sufficient in every situation a rover would experience. While wheeled robots are efficient for crossing large, flat landscapes, they struggle when their path contains obstacles that are greater than the radii of their wheels. Legged robots are far more flexible and are capable of crossing a variety of terrain, but also suffer in terms of their physical and software complexity and speed of locomotion.The All-Terrain Rover attempts to combine the ideas seen in both wheeled and legged robots in a “hybrid” system. The design of the All-Terrain Rover consists of a four wheel system, with each wheel having the ability to alter its radius. This design is able to handle various obstacles and can help humans in search and rescue missions by driving through the wreckage of natural disasters without risking more lives. It could also be repurposed and used to tackle the uneven geography of Mars.
+
+The ATR’s wheels include telescopic linear actuators which extend radially from the center of the wheel. The extension and retraction of the actuators act both to move and to stabilize the rover. The rover’s body is also able to dynamically alter its orientation by manipulating its center of mass. The additional functionality provided by the combination of actuators and movable weights afford the rover maneuvering capabilities that far outstrip those of wheeled and legged rovers.
+
+The ATR is designed using SolidWorks, a three dimensional computer-aided design software, and is then assembled using parts ordered online and parts repurposed from other machines.
+
+The All-Terrain Rover explores a novel approach to robotic movement in that it seeks to overcome obstacles by reorienting itself in order to access places that are inaccessible to its users and other rovers.
+\section{Background}
+\subsection{Shortcomings of Wheeled and Legged Robots}
+The ATR design is based on the assumption that added degrees of flexibility and various locomotive functions will create a rover that is able to navigate most terrains while avoiding the complexity of a legged system.
+
+In his essay, \textit{Principles of Robotic Motion}, Böttcher derives an equation for the total number of lift and release event combinations, $N$, of any legged robot based on the number of its legs, $k$. Lift and release event combinations refer to the combinations of raised and lowered legs where the only two positions possibilities for each leg are raised and lowered. 
+
+\begin{equation}
+N= (2k-1)!
+\end{equation}
+
+Based on this equation a four legged robot has 5040 leg positions, only including the lifting and releasing mechanism. Additional joints provide even more flexibility which will require more servos and make programming correspondingly more cumbersome. A legged robot, despite having wide degrees of flexibility in its leg positions, are limited in other capacities. For instance, the length which a legged robot is able to travel is always limited by the length of its legs. Similarly, a robot can only climb over or onto obstacles shorter than the height of its fully bent leg. These assumptions highlight the discrepancy between the high degree of complexity of a legged robot and its limited actual maneuvering capabilities.
+
+Wheels are advantageous in several respects. They are far simpler to both build and program than legs, usually requiring only one servo. They have reliable and nimble maneuverability on a level surface, especially wheels that utilize differential steering and are able to reach high speeds fairly easily.  However, the lack of variety in their locomotive ability hinders the robot in situations that require a higher degree of flexibility (i.e. large obstacles or gaps: see figure \ref{fig:height-clearing} and figure \ref{fig:gap-clearing}).
+
+\begin{figure}[H]
+Some image of height clearing
+\caption{The height clearing capabilities of a wheeled robot are highly dependent on the radius of the wheel. \textit{Experimental Mars Rover: Telescopic Linear Actuator (Sanzari)}}
+\label{fig:height-clearing}
+\end{figure}
+
+\begin{figure}[H]
+Some image of gap clearing
+\caption{Gap clearing constraints (Michael Sanzari)}
+\label{fig:gap-clearing}
+\end{figure}
+\subsection{Altering the Rover's Orientation}
+In addition to the strengthened maneuverability provided by the linear actuators, a robot that is able to alter its orientation drastically increases both its height and gap clearing capabilities. A robot that can flip over no longer uses only its wheels to overcome a height and instead uses its entire body to do work. This immensely increases both of the distances (height and gap) that the rover is able to clear (see Figure \ref{fig:flipping-over-wall}).
+
+\begin{figure}[H]
+Image of rover flipping over wall.
+\caption{Height clearing capabilities of a rover that is able to alter its orientation.}
+\label{fig:flipping-over-wall}
+\end{figure}
+
+In order to minimize the torque necessary for the motor to exert when flipping the rover, the center of mass of the rover must be shifted to one wheel axle, which becomes the axis of rotation. The torque necessary to balance to robot on one wheel axle, in preparation for the orientation alteration, is based on equations defining torque.
+
+\section{Design Process}
+\subsection{Wheel Design}
+The original ATR was designed with six telescopic linear actuators that extend from the center of each of the four wheels. In order for the rover to traverse on actuator legs without the wheel contacting the ground, the actuator had to extend at least twice the length of the radius. The telescopic mechanism doubled the distance of extension of a linear actuators. Each of these telescopic linear actuators are based at the center of the plate. The telescopic mechanism was necessary in order for the extended actuator to be more than double the radius of the wheel. 
+
+\begin{figure}[H]
+Image of telescopic linear actuator from Mike's paper.
+\caption{Telescopic linear actuator design (Sanzari).}
+\label{fig:telescopic-actuator-design}
+\end{figure}
+
+As shown in Figure \ref{fig:telescopic-actuator-design}, the telescopic mechanism requires a string wound around an inner and outer tube, both of which encircle the actuator. As the actuator extends it pushes the outer tube forward which causes the string to tighten and push the inner tube in such a way that it doubles the distance that the actuator extended. Several complications in the original ATR design, including its complexity and associated material costs, resulted in a complete change in the wheel design. 
+
+The second design (Figure \ref{fig:second-wheel-design} for the wheel involved layers of circular plates with a pair of (non-telescopic) linear actuators sandwiched between two layers yielding a total of three pairs of actuators fitted between four circular plates. Each set of actuators is angled $60^\circ$ with respect to the next plate, and within each layer, the two actuators would be placed in opposite directions, with their lengths spanning the diameter of the plate. A foot would be attached to the head of each actuator and fit between the plates. The feet, when retracted, provide the surface on which the wheel rolls, and when extended have rigid corners that enable the feet to grip into the surrounding terrain.
+
+\begin{figure}[H]
+Second wheel design image.
+\caption{Second wheel design.}
+\label{fig:second-wheel-design}
+\end{figure}
+
+\subsection{Foot Design}
+The general design of the foot remained constant throughout the design process as an isosceles trapezoid with an arc joined to the larger of the bases. The foot attaches to the actuator head and sits within the perimeter of the wheel when the actuator is retracted. When extended, the actuator pushes the foot outside the wheel perimeter where it makes contact with the ground at about a 30 degree angle. As the design for the wheel changed, the design for the foot had to be adapted. The original design included a solid foot in the aforementioned configuration that fit between the two face plates. In order to save material and fit into the constraints of newer wheel designs, the solid foot design was replaced with a frame design where two end plates shaped in the original configuration are connected by two side plates that were connected using a tab design. The center and top of the foot are hollow and that part of that space is used to house the actuator head and its connecting pieces. 
+
+\subsection{Arm Design}
+\subsection{Programming}
+\subsection{Electrical Integration}
+
+\section{Assembly Process and Results}
+\section{Conclusion}
+\subsection{Further Steps}
+The primary drivers of the design were costs and time frame: the high costs for the primary design with its radially-centered actuators made it cost-prohibitive, and part of the rationale for eliminating the second design was the sheer number of parts it had and the assembly time it would entail. To simplify construction (to save time) and to save money on bolts and screws, a puzzle-like design was adopted and constructed out of laser-cut wood. While the wheels produced from this concept were fairly sturdy, they are likely not rugged enough to use in field operations, and so the wheel needs to be redesigned to use tougher materials, i.e. metal and better attachment techniques, i.e. welding in order to improve the structural integrity of the wheel. In addition, we used VEX to construct the chassis of our robot, but a production robot probably requires more material efficiency than is given by VEX.
+
+In addition, the control software of the system has not been sufficiently automated. Code has been written to control each motor and actuator, and an orchestrated sequence of movements has been written for the case of climbing a wall from a level surface, but a production robot needs to be able to handle many, many more scenarios on different types of terrain, and the ATR needs to be programmed to observe and learn from its surrounding terrain and adjust its movements accordingly. Essentially, in terms of programming what has been done is a simple combination of basic maneuvers; what remains to be done is to make the ATR system aware of its surroundings and be able to apply several such sequences automatically.
+\section{Acknowledgments}
+\begin{enumerate}
+\item Mike, Alex
+\item Makerspace (laser cutting)
+\item WINLAB for letting us use their shit and place
+\item Hackerspace (actuators) and the dude that Mike talks about
+\item IEEE Club for VEX and shit
+\item NJ GSET and its deans
+\item Sponsors of GSET
+\end{enumerate}
+\section{References}
+\end{multicols}
+\end{document}
