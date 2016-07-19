@@ -9,9 +9,9 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-#define adaNum = 2
+const int adaNum = 2;
 
-Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)}
+Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
 
 //Adafruit_PWMServoDriver ada1 = Adafruit_PWMServoDriver(0x40);
 //Adafruit_PWMServoDriver ada2 = Adafruit_PWMServoDriver(0x41);
@@ -47,6 +47,5 @@ void loop() {
             value_to_write = Serial.parseInt(); // Collects the value to be written
         }
         ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
-         
     }
 }
