@@ -3,10 +3,10 @@ function init() {
   var main_container = new createjs.Container();
   var movables = {
     "left" : {
-      "members" : [],
+      "members" : []
     },
     "right" : {
-      "members" : [],
+      "members" : []
     }
   };
   for (var side in movables) {
