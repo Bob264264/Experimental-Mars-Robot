@@ -1,7 +1,7 @@
 from electronics.Adafruit.pyduino import Arduino
 
 class RobotController():
-	def __init__():
+	def __init__(self):
 		self.pyduino_obj = Arduino()
 	def moveactuator(actuatornum, amount):
 		self.pyduino_obj.extension_write(actuatornum, amount)
