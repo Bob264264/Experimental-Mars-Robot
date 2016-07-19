@@ -3,7 +3,7 @@
  *
  * Commands implemented with examples:
  *
- * - 10:120 -> Extends actuator at pin 10 to 120mm
+ * - 10:120 -> Extends actuator number 10 to 120mm
  */
 
 #include <Wire.h>
