@@ -13,15 +13,12 @@ const int adaNum = 2;
 
 Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
 
-//Adafruit_PWMServoDriver ada1 = Adafruit_PWMServoDriver(0x40);
-//Adafruit_PWMServoDriver ada2 = Adafruit_PWMServoDriver(0x41);
-
 char mode; //Holds mode (E for extend actuator)
 int pin_number; // Holds the pin number
 float value_to_write; // Holds the value that we want to write
 
 int getAct(int num){ // 1 < num < 24
-  //Insert pin number to adafruit port#
+  //Convert pin number to adafruit port#
   //Front Left Wheel: 1   (1-6)   (Board 1: 0-5)
   //Front Right Wheel: 2  (7-12)  (Board 1: 6-11)
   //Back Left Wheel: 3    (13-18) (Board 2: 0-5)
@@ -40,6 +37,15 @@ void setup() {
     yield();
 }
 
+void blinkN(int num){
+  for (int i = 0; i < num; i++){
+    digitalWrite(13, HIGH);
+    delay(300);
+    digitalWrite(13, LOW);
+    delay(300);
+  }
+}
+
 void loop() {
     // Check if characters available in the buffer
     if (Serial.available() > 0) {
@@ -51,6 +57,7 @@ void loop() {
         switch (mode){
             case 'E': //Extend actuator
                 ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
+                //blinkN(getAct(pin_number));
                 break;
           //Can add more stuff
             default:

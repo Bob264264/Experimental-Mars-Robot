@@ -84,8 +84,11 @@ class Arduino():
     def extension_write(self, pin_number, analog_value):
         command = (''.join(('E', str(pin_number), ':',
                             str(analog_value)))).encode()
-
         self.conn.write(command)
+
+    def extensionSync(self, pin_numbers, analog_value):
+        for i in pin_numbers:
+            self.extension_write(i, analog_value)
 
     def close(self):
         """
