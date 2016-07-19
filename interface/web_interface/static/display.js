@@ -144,7 +144,7 @@ createjs.Ticker.addEventListener("tick", function() {
   stage.update();
 })
 
-function spin_motor(motor_name, speed, degrees) {
+function animation_spin_motor(motor_name, speed, degrees) {
 
   var wheel;
   var side_container;
@@ -178,7 +178,7 @@ function spin_motor(motor_name, speed, degrees) {
 }
 
 var ACTUATOR_EXTENSION_SPEED = 0.1; //Remains to be revised via trial and error
-function set_actuator(actuator_label, amount) {
+function animation_set_actuator(actuator_label, amount) {
   var side         = (actuator_label.substring(0,1) == "L") ? "Left" : "Right";
   var wheel        = (actuator_label.substring(2,3) == "1") ? "Front" : "Back";
   var actuator_num = actuator_label.substring(3,4);

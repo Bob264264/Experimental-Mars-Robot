@@ -16,8 +16,7 @@ $("#component-move").click(function() {
 					else {
 						value = value.split("_");
 						if (parseFloat(value[0]) === value[0] && parseFloat(value[0]) === value[1]) {
-							spin_motor(component, value[0], value[1]);
-							api_spin_motor(component, value[0], value[1]);
+							api_spin_motor(component, value[0], value[1]);						
 						}
 						else {
 							Materialize.toast("Values invalid for motor" + component + " control, try again.", 2000);
@@ -25,7 +24,7 @@ $("#component-move").click(function() {
 					}
 				case "A":
 					if (parseFloat(value) === value) {
-						set_actuator(component, value);
+						animation_set_actuator(component, value);
 						api_set_actuator(component, value);
 					}
 					else {
@@ -36,10 +35,49 @@ $("#component-move").click(function() {
 	}
 });
 
+function component_error(component_name) {
+	Materialize.toast("There was an error performing the requested action for component " + component_name, 2000);
+}
+
 function api_spin_motor(motor_name, speed, degrees) {
-	//TODO implement using AJAX JQuery
+	$.ajax({
+		method: "POST",
+		data  : {
+			"movement_type" : "wheelmotor",
+			"component_id"  : motor_name,
+			"speed"         : speed,
+			"degrees"       : degrees,
+		},
+		url : "/",
+		complete: function(data) {
+			data = JSON.parse(data);
+			if (data.success == "success") {
+				animation_spin_motor(motor_name, speed, degrees);
+			}
+			else {
+				component_error(motor_name);
+			}
+		}
+	});
 }
 
 function api_set_actuator(actuator_label, amount) {
-	//TODO implement using AJAX JQuery
+		$.ajax({
+		method: "POST",
+		data  : {
+			"movement_type" : "actuator",
+			"component_id"  : actuator_label,
+			"amount"        : amount
+		},
+		url : "/",
+		complete: function(data) {
+			data = JSON.parse(data);
+			if (data.success == "success") {
+				animation_set_actuator(actuator_label, amount);
+			}
+			else {
+				component_error(actuator_label);
+			}
+		}
+	});
 }
