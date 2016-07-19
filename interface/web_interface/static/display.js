@@ -1,15 +1,8 @@
 var stage = new createjs.Stage("roverCanvas");
 var main_container = new createjs.Container();
-var movables = {
-  "left" : {
-    "members" : []
-  },
-  "right" : {
-    "members" : []
-  }
-};
 
-for (var side in movables) {
+side_types = {"left" : [], "right" : []};
+for (var side in side_types) {
 
   var y           = (side == "left") ? 0 : 350;
   var side_abbrev = (side == "left") ? "L" : "R";
@@ -28,7 +21,6 @@ for (var side in movables) {
   titleText = new createjs.Text("Rover " + side_full + " Side", "20px Roboto", "#000000");
   titleText.x = -wheelradius;
   titleText.y = -offsety - wheelradius;
-  movables[side]["members"].push({"titleText" : titleText});
 
   side_container.addChild(titleText);
 
@@ -60,8 +52,8 @@ for (var side in movables) {
     .drawCircle(0,0,wheelradius);
   frontWheelText.font = "Roboto";
   frontWheelText.name = "FrontWheelText";
-  frontWheelText.text = "Wheel Motor " + side_abbrev + "1: 0 rpm"
-                        + "\n" + "Rotation: 30 deg";
+  frontWheelText.text = "Wheel Motor " + side_abbrev + "M1: 0 rpm"
+                        + "\n" + "Rotation: 0 deg";
   frontWheelText.x    = 0;
   frontWheelText.y    = wheelradius + 20;
 
@@ -69,8 +61,8 @@ for (var side in movables) {
     .setStrokeStyle(2)
     .beginStroke("black")
     .drawCircle(0,0,wheelradius);
-  backWheelText.text = "Wheel Motor " + ((side == "left") ? "L" : "R") + "2: 0 rpm"
-                      + "\n" + "Rotation: 30 deg";
+  backWheelText.text = "Wheel Motor " + ((side == "left") ? "L" : "R") + "M2: 0 rpm"
+                      + "\n" + "Rotation: 0 deg";
   backWheelText.name = "BackWheelText";
   backWheelText.x    = wheeloffset;
   backWheelText.y    = wheelradius + 20;
@@ -79,10 +71,6 @@ for (var side in movables) {
   backwheel_container.addChild(backWheel);
   side_container.addChild(frontWheelText);
   side_container.addChild(backWheelText);
-  movables[side]["members"].push({"frontWheel" : frontWheel});
-  movables[side]["members"].push({"frontWheelText" : frontWheelText});
-  movables[side]["members"].push({"backWheel" : backWheel});
-  movables[side]["members"].push({"backWheelText" : backWheelText});
 
   connectorPiece = new createjs.Shape();
   connectorPieceWidth = 20;
@@ -108,7 +96,7 @@ for (var side in movables) {
     frontActuatorLabels.push(new createjs.Text());
     frontActuatorLabels[i].x = wheelradius * Math.cos(Math.PI / 3.0 * i) / 2;
     frontActuatorLabels[i].y = wheelradius * Math.sin(Math.PI / 3.0 * i) / 2;
-    frontActuatorLabels[i].text = side_abbrev + "1" + (i + 1).toString();
+    frontActuatorLabels[i].text = side_abbrev + "A1" + (i + 1).toString();
     frontActuatorLabels[i].font = "12px Roboto";
     frontActuatorLabelAmounts.push(new createjs.Text());
     frontActuatorLabelAmounts[i].name = frontActuatorLabels[i].text;
@@ -127,7 +115,7 @@ for (var side in movables) {
     backActuatorLabels.push(new createjs.Text());
     backActuatorLabels[i].x = wheelradius * Math.cos(Math.PI / 3.0 * i) / 2;
     backActuatorLabels[i].y = wheelradius * Math.sin(Math.PI / 3.0 * i) / 2;
-    backActuatorLabels[i].text = side_abbrev + "2" + (i + 1).toString();
+    backActuatorLabels[i].text = side_abbrev + "A2" + (i + 1).toString();
     backActuatorLabels[i].font = "12px Roboto";
     backActuatorLabelAmounts.push(new createjs.Text());
     backActuatorLabelAmounts[i].name = backActuatorLabels[i].text;
@@ -148,13 +136,6 @@ for (var side in movables) {
   side_container.addChild(frontwheel_container);
   side_container.addChild(backwheel_container);
 
-  movables[side]["members"].push({"frontActuators" : frontActuators});
-  movables[side]["members"].push({"frontActuatorLabels" : frontActuatorLabels});
-  movables[side]["members"].push({"frontActuatorAmountLabels" : frontActuatorLabelAmounts});
-  movables[side]["members"].push({"backActuators" : backActuators});
-  movables[side]["members"].push({"backActuatorLabels" : backActuatorLabels});
-  movables[side]["members"].push({"backActuatorAmountLabels" : backActuatorLabelAmounts});
-
   main_container.addChild(side_container);
 } 
 stage.addChild(main_container);
@@ -163,13 +144,12 @@ createjs.Ticker.addEventListener("tick", function() {
   stage.update();
 })
 
-
 function spin_motor(motor_name, speed, degrees) {
 
   var wheel;
   var side_container;
   var side_container_type = (motor_name.substring(0,1) == "L") ? "Left" : "Right";
-  var wheelType           = (motor_name.substring(1,2) == "1") ? "Front" : "Back";
+  var wheelType           = (motor_name.substring(2,3) == "1") ? "Front" : "Back";
 
   if (side_container_type == "Left") {
     if (wheelType == "Front") {
@@ -200,8 +180,8 @@ function spin_motor(motor_name, speed, degrees) {
 var ACTUATOR_EXTENSION_SPEED = 0.1; //Remains to be revised via trial and error
 function set_actuator(actuator_label, amount) {
   var side         = (actuator_label.substring(0,1) == "L") ? "Left" : "Right";
-  var wheel        = (actuator_label.substring(1,2) == "1") ? "Front" : "Back";
-  var actuator_num = actuator_label.substring(2,3);
+  var wheel        = (actuator_label.substring(2,3) == "1") ? "Front" : "Back";
+  var actuator_num = actuator_label.substring(3,4);
 
   var actuator = main_container.getChildByName("Side:" + side).getChildByName(wheel + "Wheel").getChildByName(actuator_label);
 

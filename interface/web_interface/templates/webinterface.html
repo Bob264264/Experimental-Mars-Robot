@@ -64,54 +64,6 @@
   <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="
   sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
     <script src = "{{ url_for('static', filename='display.js') }}"></script>
+    <script src = "{{ url_for('static', filename='api.js') }}"></script>
   <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
-  <script>
-  $("#component-move").click(function() {
-    var componentnumbers = $("#componentnumbers").val().split(",");
-    var componentvalues = $("#componentvalues").val().split(",");
-
-    if (componentnumbers.length != componentvalues.length) {
-      Materialize.toast("Too many values, or not enough components have been given a value. Try again.", 2000);
-    }
-    else {
-      var data = [];
-      for(var i = 0; i < componentvalues.length; i++) {
-        data[i] = [componentnumbers[i], componentvalues[i]];
-      }
-
-      $.ajax({
-        method: "POST",
-        url   : "/",
-        data  : data,
-      }).done(function(response) {
-          try {
-            response = JSON.parse(response);
-            
-          }
-          catch(e) {
-            Materialize.toast("The server had an error during response. Please try again.");
-          }
-      });
-    }
-  });
-  $("#do-manuever").click(function() {
-    request = {
-      "automanuever" : true,
-      "manuevertype" : $("automanuever").val(),
-    }
-    $.ajax({
-      method: "POST",
-      url   : "/",
-      data  : request
-    }).done(function(response) {
-      try {
-        response = JSON.parse(response);
-        
-      }
-      catch(e) {
-        Materialize.toast("The server had an error during response. Please try again.");
-      }
-    });
-  });
-  </script>
 </html>
