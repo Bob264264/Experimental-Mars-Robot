@@ -9,8 +9,12 @@
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
 
-Adafruit_PWMServoDriver ada1 = Adafruit_PWMServoDriver(0x40);
-Adafruit_PWMServoDriver ada2 = Adafruit_PWMServoDriver(0x41);
+#define adaNum = 2
+
+Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)}
+
+//Adafruit_PWMServoDriver ada1 = Adafruit_PWMServoDriver(0x40);
+//Adafruit_PWMServoDriver ada2 = Adafruit_PWMServoDriver(0x41);
 
 int pin_number; // Holds the pin number
 float value_to_write; // Holds the value that we want to write
@@ -28,8 +32,10 @@ void setup() {
     Serial.begin(9600); // Serial Port at 9600 baud
     Serial.setTimeout(100); // Instead of the default 1000ms, in order
                             // to speed up the Serial.parseInt() 
-    ada1.begin();
-    ada1.setPWMFreq(60);
+    for (int i = 0; i < adaNum; i++){
+      ada[i].begin();
+      ada[i].setPWMFreq(60);
+    }
     yield();
 }
 
@@ -40,10 +46,7 @@ void loop() {
         if (Serial.read()==':'){
             value_to_write = Serial.parseInt(); // Collects the value to be written
         }
-        if (pin_number < 13){
-            ada1.setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
-        } else if (pin_number < 25){
-            ada2.setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
-        } 
+        ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
+         
     }
 }
