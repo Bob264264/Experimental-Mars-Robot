@@ -1,7 +1,8 @@
 from pyduino import Arduino
-import time
 
 ard = Arduino()
 while True:
+    act = input("Input an actuator number:")
     pos = input("Input an extension:")
-    ard.extension_write(7, pos)
+    ard.extension_write(act, pos)
+    print 'hi'
