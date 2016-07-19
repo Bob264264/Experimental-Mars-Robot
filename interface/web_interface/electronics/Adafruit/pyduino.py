@@ -80,9 +80,9 @@ class Arduino():
         self.conn.write(command)
 
     '''
-    
+
     def extension_write(self, pin_number, analog_value):
-        command = (''.join(('WE', str(pin_number), ':',
+        command = (''.join((str(pin_number), ':',
                             str(analog_value)))).encode()
 
         self.conn.write(command)
