@@ -1,7 +1,7 @@
 var stage = new createjs.Stage("roverCanvas");
 var main_container = new createjs.Container();
 
-side_types = {"left" : [], "right" : []};
+side_types = {left : [], right : []};
 for (var side in side_types) {
 
   var y           = (side == "left") ? 0 : 350;
