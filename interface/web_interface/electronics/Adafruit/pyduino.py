@@ -93,6 +93,7 @@ class Arduino():
     def rotateStepper(self, pin_number, analog_value):
         command = (''.join(('R', str(pin_number), ':',
                             str(analog_value)))).encode()
+        print command
         self.conn.write(command)
 
     def close(self):

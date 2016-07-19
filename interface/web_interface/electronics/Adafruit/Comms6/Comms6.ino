@@ -3,7 +3,10 @@
  *
  * Commands implemented with examples:
  *
- * - 10:120 -> Extends actuator number 10 to 120mm
+ * - E10:120 -> Extends actuator number 10 to 120mm
+ * 
+ * - R1:100  -> Rotates stepper motor number 1 by 100 steps
+ * 
  */
 
 #include <Wire.h>
@@ -17,10 +20,7 @@ const int STEPSPEED = 10; //stepper motor speed set
 Adafruit_PWMServoDriver ada[ADANUM] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
 Adafruit_MotorShield shield[SHINUM] = {Adafruit_MotorShield(0x60), Adafruit_MotorShield(0x61)};
 //4 Stepper Motors | 2 Motor Shields
-Adafruit_StepperMotor *motors[SHINUM * 2];
-for (int i = 0; i < SHINUM*2; i++){
-  motor[i] = shield[i/2].getStepper(200, (i%2) + 1)
-}
+Adafruit_StepperMotor *motors[SHINUM * 2] = {};
 
 
 char mode; //Holds mode (E for extend actuator, R for rotate stepper motor)
@@ -43,6 +43,9 @@ void setup() {
     for (int i = 0; i < ADANUM; i++){
       ada[i].begin();
       ada[i].setPWMFreq(60);
+    }
+    for (int i = 0; i < SHINUM*2; i++){
+      motors[i] = shield[i/2].getStepper(200, (i%2) + 1);
     }
     for (int i = 0; i < SHINUM; i++){
       shield[i].begin();
