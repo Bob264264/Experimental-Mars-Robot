@@ -90,6 +90,11 @@ class Arduino():
         for i in pin_numbers:
             self.extension_write(i, analog_value)
 
+    def rotateStepper(self, pin_number, analog_value):
+        command = (''.join(('R', str(pin_number), ':',
+                            str(analog_value)))).encode()
+        self.conn.write(command)
+
     def close(self):
         """
         To ensure we are properly closing our connection to the

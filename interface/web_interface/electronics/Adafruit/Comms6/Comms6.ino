@@ -10,16 +10,17 @@
 #include <Adafruit_PWMServoDriver.h>
 #include <Adafruit_MotorShield.h>
 
-const int adaNum = 2;
-const int shiNum = 2;
+const int ADANUM = 2;     //number of Adafruit boards
+const int SHINUM = 2;     //number of Motor shields
+const int STEPSPEED = 10; //stepper motor speed set
 
-Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
-Adafruit_MotorShield shield[shiNum] = {Adafruit_MotorShield(0x60), Adafruit_MotorShield(0x61)};
-Adafruit_StepperMotor *motors[shiNum * 2];
-for (int i = 0; i < shiNum*2; i++){
+Adafruit_PWMServoDriver ada[ADANUM] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
+Adafruit_MotorShield shield[SHINUM] = {Adafruit_MotorShield(0x60), Adafruit_MotorShield(0x61)};
+//4 Stepper Motors | 2 Motor Shields
+Adafruit_StepperMotor *motors[SHINUM * 2];
+for (int i = 0; i < SHINUM*2; i++){
   motor[i] = shield[i/2].getStepper(200, (i%2) + 1)
 }
-//4 Stepper Motors | 2 Motor Shields
 
 
 char mode; //Holds mode (E for extend actuator, R for rotate stepper motor)
@@ -39,20 +40,16 @@ void setup() {
     Serial.begin(9600); // Serial Port at 9600 baud
     Serial.setTimeout(100); // Instead of the default 1000ms, in order
                             // to speed up the Serial.parseInt() 
-    for (int i = 0; i < adaNum; i++){
+    for (int i = 0; i < ADANUM; i++){
       ada[i].begin();
       ada[i].setPWMFreq(60);
     }
+    for (int i = 0; i < SHINUM; i++){
+      shield[i].begin();
+      motors[i*2]->setSpeed(STEPSPEED);
+      motors[(i*2)+1]->setSpeed(STEPSPEED);
+    }
     yield();
-}
-
-void blinkN(int num){
-  for (int i = 0; i < num; i++){
-    digitalWrite(13, HIGH);
-    delay(300);
-    digitalWrite(13, LOW);
-    delay(300);
-  }
 }
 
 void loop() {
@@ -68,7 +65,7 @@ void loop() {
                 ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
                 break;
             case 'R': //Rotate stepper motor
-                
+                motors[pin_number-1]->step(value_to_write, FORWARD, DOUBLE);
                 break;
           //Can add more stuff
             default:
