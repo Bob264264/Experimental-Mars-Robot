@@ -3,7 +3,7 @@
  *
  * Commands implemented with examples:
  *
- * - WE10:120 -> Extends actuator at pin 10 to 120mm
+ * - 10:120 -> Extends actuator at pin 10 to 120mm
  */
 
 #include <Wire.h>
@@ -13,10 +13,7 @@ Adafruit_PWMServoDriver ada1 = Adafruit_PWMServoDriver(0x40);
 Adafruit_PWMServoDriver ada2 = Adafruit_PWMServoDriver(0x41);
 
 int pin_number; // Holds the pin number
-int digital_value; // Holds the digital value
-float analog_value; // Holds the analog value
 float value_to_write; // Holds the value that we want to write
-int wait_for_transmission = 5; // Delay in ms in order to receive the serial data
 
 int getAct(int num){ // 1 < num < 24
   //Insert pin number to adafruit port#
