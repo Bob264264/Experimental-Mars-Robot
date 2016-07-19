@@ -25,7 +25,6 @@ for (var side in side_types) {
   side_container.addChild(titleText);
 
   var change = 20;
-  //var wheeloffset = wheelradius * 4 + change;
   var wheeloffset = 373;
 
   var frontwheel_container = new createjs.Container();
@@ -42,25 +41,11 @@ for (var side in side_types) {
   backwheel_container.regX = 0;
   backwheel_container.regY = 0;
 
-  var arm_container = new createjs.Container();
-  arm_container.name = "TorqueSystem";
-  arm_container.x = 0;
-  arm_container.y = wheeloffset + 200;
-  arm_container.regX = 30; //figure out rotation around a point
-  arm_container.regY = 30;
-
-  titleText = new createjs.Text(side_full + " Arm", "20px Roboto", "#000000");
-  titleText.x = -wheelradius;
-  titleText.y = 0;
-
-  arm_container.addChild(titleText);
 
   var frontWheel     = new createjs.Shape();
   var frontWheelText = new createjs.Text();
   var backWheel      = new createjs.Shape();
   var backWheelText  = new createjs.Text();
-  var arm            = new createjs.Shape();
-  var armText        = new createjs.Text();
 
   frontWheel.graphics
     .setStrokeStyle(2)
@@ -83,26 +68,11 @@ for (var side in side_types) {
   backWheelText.x    = wheeloffset;
   backWheelText.y    = wheelradius + 20;
 
-  arm.rotation = 50; //change with arduino measurement (angle of rotation on arm)
-  arm.graphics
-      .setStrokeStyle(2)
-      .beginStroke("black")
-      .drawRect(60, 70, wheeloffset, 40)
-      .beginStroke("red")
-      .drawRect(wheeloffset / 2, 60, 40, 60); //change first argument with arduino measurement (distance along arm)
-
-  armText.name = "ArmText";
-  armText.font = "Roboto";
-  armText.text = side_full + " Arm Rotation: 40 deg"; //change degree measure here too
-  armText.x = 0;
-  armText.y = 40;
-
   frontwheel_container.addChild(frontWheel);
   backwheel_container.addChild(backWheel);
-  arm_container.addChild(arm);
+
   side_container.addChild(frontWheelText);
   side_container.addChild(backWheelText);
-  arm_container.addChild(armText);
 
 
   var frontActuators            = [];
@@ -160,11 +130,90 @@ for (var side in side_types) {
 
   side_container.addChild(frontwheel_container);
   side_container.addChild(backwheel_container);
-  side_container.addChild(arm_container);
 
   main_container.addChild(side_container);
-} 
+}
+
+var left_arm_container = new createjs.Container();
+left_arm_container.name = "LeftArmContainer";
+left_arm_container.x = 20;
+left_arm_container.y = wheeloffset + 800;
+left_arm_container.regX = 0; //figure out rotation around a point
+left_arm_container.regY = 0;
+
+var titleText = new createjs.Text("Left Arm", "20px Roboto", "#000000");
+titleText.x = 0;
+titleText.y = -4 * wheelradius;
+
+left_arm_container.addChild(titleText);
+
+var left_arm            = new createjs.Shape();
+var left_armText        = new createjs.Text();
+
+left_arm.rotation = 90; //change with arduino measurement (angle of rotation on arm)
+left_arm.name = "LeftArm"
+left_arm.x = 500;
+left_arm.y = 0;
+left_arm.regX = -50 + wheeloffset;
+left_arm.regY = -100;
+left_arm.graphics
+    .setStrokeStyle(2)
+    .beginStroke("black")
+    .drawRect(-50, -200, wheeloffset, 100)
+    .beginStroke("red")
+    .drawRect(273, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -50 to 273)
+
+left_armText.name = "LeftArmText";
+left_armText.font = "Roboto";
+left_armText.text = "Left Arm Rotation: " + left_arm.rotation + " deg";
+left_armText.x = 0;
+left_armText.y = -3 * wheelradius - 80;
+
+left_arm_container.addChild(left_armText);
+left_arm_container.addChild(left_arm);
+
+//======================================================================================================================
+var right_arm_container = new createjs.Container();
+right_arm_container.name = "RightArmContainer";
+right_arm_container.x = 20;
+right_arm_container.y = wheeloffset + 1200;
+right_arm_container.regX = 0; //figure out rotation around a point
+right_arm_container.regY = 0;
+
+var titleText2 = new createjs.Text("Right Arm", "20px Roboto", "#000000");
+titleText2.x = 0;
+titleText2.y = -4 * wheelradius;
+
+right_arm_container.addChild(titleText2);
+
+var right_arm            = new createjs.Shape();
+var right_armText        = new createjs.Text();
+
+right_arm.rotation = 90; //change with arduino measurement (angle of rotation on arm)
+right_arm.x = 200;
+right_arm.y = 0;
+right_arm.name = "RightArm";
+right_arm.regX = wheeloffset / 2 + 135;
+right_arm.regY = -200;
+right_arm.graphics
+    .setStrokeStyle(2)
+    .beginStroke("black")
+    .drawRect(-50, -200, wheeloffset, 100)
+    .beginStroke("red")
+    .drawRect(-50, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -50 to 273)
+
+right_armText.name = "RightArmText";
+right_armText.font = "Roboto";
+right_armText.text = "Right Arm Rotation: " + right_arm.rotation + " deg";
+right_armText.x = 0;
+right_armText.y = -3 * wheelradius - 80;
+
+right_arm_container.addChild(right_armText);
+right_arm_container.addChild(right_arm);
+
 stage.addChild(main_container);
+stage.addChild(left_arm_container);
+stage.addChild(right_arm_container);
 
 createjs.Ticker.addEventListener("tick", function() {
   stage.update();
@@ -214,4 +263,28 @@ function animation_set_actuator(actuator_label, amount) {
   createjs.Tween.get(actuator).to({extension : amount}, amount / ACTUATOR_EXTENSION_SPEED).on("change", function (){
     actuator.text = actuator.extension.toString() + " mm";
   });
+}
+
+function animation_arm(side, speed, d) {
+  var container;
+  var degrees = 90;
+  degrees += d;
+  var arm;
+  if(side == "Left") {
+    degrees = 360 - degrees;
+    container = stage.getChildByName("LeftArmContainer");
+    arm = "LeftArm";
+    container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    });
+  }
+  else if(side == "Right") {
+    container = stage.getChildByName("RightArmContainer");
+    arm = "RightArm";
+    container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    });
+  }
 }
