@@ -17,8 +17,8 @@ class Arduino():
         self.conn = serial.Serial(serial_port, baud_rate, timeout=read_timeout)
     '''
 
-    def __init__(self):
-        self.conn = serial.Serial('COM8', 9600, timeout=.1)
+    def __init__(self, serial_port='COM8'):
+        self.conn = serial.Serial(serial_port, 9600, timeout=.1)
 
     def set_pin_mode(self, pin_number, mode):
         """
