@@ -18,7 +18,7 @@ class Arduino():
     '''
 
     def __init__(self):
-        self.conn = serial.Serial('/dev/cu.usbmodem1421', 9600, timeout=.1)
+        self.conn = serial.Serial('COM8', 9600, timeout=.1)
 
     def set_pin_mode(self, pin_number, mode):
         """
