@@ -20,6 +20,7 @@ class Arduino():
     def __init__(self, serial_port='COM8'):
         self.conn = serial.Serial(serial_port, 9600, timeout=.1)
 
+    '''
     def set_pin_mode(self, pin_number, mode):
         """
         Performs a pinMode() operation on pin_number
@@ -78,6 +79,8 @@ class Arduino():
                             str(analog_value)))).encode()
         self.conn.write(command)
 
+    '''
+    
     def extension_write(self, pin_number, analog_value):
         command = (''.join(('WE', str(pin_number), ':',
                             str(analog_value)))).encode()
