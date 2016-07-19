@@ -151,7 +151,7 @@ var left_arm            = new createjs.Shape();
 var left_armText        = new createjs.Text();
 
 left_arm.rotation = 90; //change with arduino measurement (angle of rotation on arm)
-left_arm.name = "LeftArm"
+left_arm.name = "LeftArm";
 left_arm.x = 500;
 left_arm.y = 0;
 left_arm.regX = -50 + wheeloffset;
