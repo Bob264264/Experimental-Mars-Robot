@@ -8,12 +8,21 @@
 
 #include <Wire.h>
 #include <Adafruit_PWMServoDriver.h>
+#include <Adafruit_MotorShield.h>
 
 const int adaNum = 2;
+const int shiNum = 2;
 
 Adafruit_PWMServoDriver ada[adaNum] = {Adafruit_PWMServoDriver(0x40), Adafruit_PWMServoDriver(0x41)};
+Adafruit_MotorShield shield[shiNum] = {Adafruit_MotorShield(0x60), Adafruit_MotorShield(0x61)};
+Adafruit_StepperMotor *motors[shiNum * 2];
+for (int i = 0; i < shiNum*2; i++){
+  motor[i] = shield[i/2].getStepper(200, (i%2) + 1)
+}
+//4 Stepper Motors | 2 Motor Shields
 
-char mode; //Holds mode (E for extend actuator)
+
+char mode; //Holds mode (E for extend actuator, R for rotate stepper motor)
 int pin_number; // Holds the pin number
 float value_to_write; // Holds the value that we want to write
 
@@ -57,6 +66,9 @@ void loop() {
         switch (mode){
             case 'E': //Extend actuator
                 ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
+                break;
+            case 'R': //Rotate stepper motor
+                
                 break;
           //Can add more stuff
             default:
