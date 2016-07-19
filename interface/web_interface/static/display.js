@@ -9,7 +9,7 @@ for (var side in side_types) {
   var side_full   = (side == "left") ? "Left" : "Right";
   var offsetx = 50;
   var offsety = 50;
-  var wheelradius = 100;
+  var wheelradius = 110;
 
   var side_container = new createjs.Container();
   side_container.name = "Side:" + side_full;
@@ -25,7 +25,8 @@ for (var side in side_types) {
   side_container.addChild(titleText);
 
   var change = 20;
-  var wheeloffset = wheelradius * 4 + change;
+  //var wheeloffset = wheelradius * 4 + change;
+  var wheeloffset = 373;
 
   var frontwheel_container = new createjs.Container();
   frontwheel_container.name = "FrontWheel";
@@ -41,10 +42,25 @@ for (var side in side_types) {
   backwheel_container.regX = 0;
   backwheel_container.regY = 0;
 
+  var arm_container = new createjs.Container();
+  arm_container.name = "TorqueSystem";
+  arm_container.x = 0;
+  arm_container.y = wheeloffset + 200;
+  arm_container.regX = 30; //figure out rotation around a point
+  arm_container.regY = 30;
+
+  titleText = new createjs.Text(side_full + " Arm", "20px Roboto", "#000000");
+  titleText.x = -wheelradius;
+  titleText.y = 0;
+
+  arm_container.addChild(titleText);
+
   var frontWheel     = new createjs.Shape();
   var frontWheelText = new createjs.Text();
   var backWheel      = new createjs.Shape();
   var backWheelText  = new createjs.Text();
+  var arm            = new createjs.Shape();
+  var armText        = new createjs.Text();
 
   frontWheel.graphics
     .setStrokeStyle(2)
@@ -61,24 +77,33 @@ for (var side in side_types) {
     .setStrokeStyle(2)
     .beginStroke("black")
     .drawCircle(0,0,wheelradius);
-  backWheelText.text = "Wheel Motor " + ((side == "left") ? "L" : "R") + "M2: 0 rpm"
+  backWheelText.text = "Wheel Motor " + side_abbrev + "M2: 0 rpm"
                       + "\n" + "Rotation: 0 deg";
   backWheelText.name = "BackWheelText";
   backWheelText.x    = wheeloffset;
   backWheelText.y    = wheelradius + 20;
 
+  arm.rotation = 50; //change with arduino measurement (angle of rotation on arm)
+  arm.graphics
+      .setStrokeStyle(2)
+      .beginStroke("black")
+      .drawRect(60, 70, wheeloffset, 40)
+      .beginStroke("red")
+      .drawRect(wheeloffset / 2, 60, 40, 60); //change first argument with arduino measurement (distance along arm)
+
+  armText.name = "ArmText";
+  armText.font = "Roboto";
+  armText.text = side_full + " Arm Rotation: 40 deg"; //change degree measure here too
+  armText.x = 0;
+  armText.y = 40;
+
   frontwheel_container.addChild(frontWheel);
   backwheel_container.addChild(backWheel);
+  arm_container.addChild(arm);
   side_container.addChild(frontWheelText);
   side_container.addChild(backWheelText);
+  arm_container.addChild(armText);
 
-  connectorPiece = new createjs.Shape();
-  connectorPieceWidth = 20;
-  connectorPiece.graphics
-    .setStrokeStyle(2)
-    .beginStroke("black")
-    .drawRect(wheelradius, - connectorPieceWidth / 2, wheelradius * 2 + change, connectorPieceWidth);
-  side_container.addChild(connectorPiece);
 
   var frontActuators            = [];
   var frontActuatorLabels       = [];
@@ -135,6 +160,7 @@ for (var side in side_types) {
 
   side_container.addChild(frontwheel_container);
   side_container.addChild(backwheel_container);
+  side_container.addChild(arm_container);
 
   main_container.addChild(side_container);
 } 
@@ -142,7 +168,7 @@ stage.addChild(main_container);
 
 createjs.Ticker.addEventListener("tick", function() {
   stage.update();
-})
+});
 
 function animation_spin_motor(motor_name, speed, degrees) {
 
