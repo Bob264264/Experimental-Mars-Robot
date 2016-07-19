@@ -57,7 +57,6 @@ void loop() {
         switch (mode){
             case 'E': //Extend actuator
                 ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
-                //blinkN(getAct(pin_number));
                 break;
           //Can add more stuff
             default:
