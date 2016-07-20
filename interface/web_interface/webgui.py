@@ -1,4 +1,6 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
+import json
+
 app = Flask(__name__)
 
 from api import RobotController
@@ -11,26 +13,27 @@ def controlpage():
 def res(result):
 	return json.dumps({"success": result})
 
-@app.route("/", methods=["POST"])
+@app.route("/api", methods=["POST"])
 def controlapi():
-	movement_type = request.form("movement_type")
-	component_id  = request.form("component_id")
+	movement_type = request.form.get("movement_type")
+	component_id  = request.form.get("component_id")
 	if movement_type == "actuator":
-		amount = int(request.form("amount"))
+		amount = int(request.form.get("amount"))
 		#decode component_id
 		orientation = 0 if component_id[0] == "L" else 12
 		wheelnum    = 0 if component_id[2] == "1" else 6
 		actuatornum = int(component_id[3])
 
 		realactuatornum = actuatornum + wheelnum + orientation
-		if rc.moveactuator(realactuatornum, amount):
-			return res("success")
-		else:
-			return res("failure")
+		#if rc.moveactuator(realactuatornum, amount):
+		return res("success")
+		#else:
+		#	return res("failure")
 
 	elif movement_type == "wheelmotor":
-		degrees = request.form("degrees")
-		speed   = request.form("speed")
+		degrees = request.form.get("degrees")
+		speed   = request.form.get("speed")
+		return res("success")
 
 if __name__ == "__main__":
     app.run()

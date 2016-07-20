@@ -135,7 +135,9 @@
       container = stage.getChildByName("LeftArmContainer");
       arm = "LeftArm";
       container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
-      createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+
+      var armObj = container.getChildByName(arm);
+      createjs.Tween.get(armObj).to({rotation: degrees}, Math.abs(degrees - armObj.rotation) / speed * 60, createjs.Ease.SineInOut).call(function() {
         container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
       });
     }
@@ -144,7 +146,8 @@
       container = stage.getChildByName("RightArmContainer");
       arm = "RightArm";
       container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
-      createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+      var armObj = container.getChildByName(arm);
+      createjs.Tween.get(armObj).to({rotation: degrees}, Math.abs(degrees - armObj.rotation) / speed * 60, createjs.Ease.SineInOut).call(function() {
         container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
       });
     }

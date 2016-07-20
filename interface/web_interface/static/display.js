@@ -215,9 +215,7 @@ stage.addChild(main_container);
 stage.addChild(left_arm_container);
 stage.addChild(right_arm_container);
 
-createjs.Ticker.addEventListener("tick", function() {
-  stage.update();
-});
+createjs.Ticker.addEventListener("tick", stage);
 
 function animation_spin_motor(motor_name, speed, degrees) {
 
@@ -247,9 +245,12 @@ function animation_spin_motor(motor_name, speed, degrees) {
     }
   }
   side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": " + speed.toString() + " rpm" + "\n" + "Rotation: " + wheel.rotation + "deg";
-  createjs.Tween.get(wheel).to({rotation: degrees}, 60.0 * degrees / speed, createjs.Ease.SineInOut).call(function() {
+
+  createjs.Tween.get(wheel, {override: true}).to({rotation: degrees}, 60.0 * degrees / speed).call(function() {
       side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": 0 rpm" + "\n" + "Rotation: " + degrees.toString() + "deg";
+      this.setPaused(true); 
   });
+  createjs.Tween.update();
 }
 
 var ACTUATOR_EXTENSION_SPEED = 0.1; //Remains to be revised via trial and error
@@ -260,9 +261,10 @@ function animation_set_actuator(actuator_label, amount) {
 
   var actuator = main_container.getChildByName("Side:" + side).getChildByName(wheel + "Wheel").getChildByName(actuator_label);
 
-  createjs.Tween.get(actuator).to({extension : amount}, amount / ACTUATOR_EXTENSION_SPEED).on("change", function (){
+  createjs.Tween.get(actuator, {override: true}).to({extension : amount}, amount / ACTUATOR_EXTENSION_SPEED).on("change", function (){
     actuator.text = actuator.extension.toString() + " mm";
   });
+  createjs.Tween.update();
 }
 
 function animation_arm(side, speed, d) {
@@ -275,16 +277,17 @@ function animation_arm(side, speed, d) {
     container = stage.getChildByName("LeftArmContainer");
     arm = "LeftArm";
     container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
-    createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
-      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    createjs.Tween.get(container.getChildByName(arm), {override: true}).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + container.getChildByName(side + "ArmText").rotation + " deg";
     });
   }
   else if(side == "Right") {
     container = stage.getChildByName("RightArmContainer");
     arm = "RightArm";
     container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
-    createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
-      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+    createjs.Tween.get(container.getChildByName(arm), {override: true}).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + container.getChildByName(side + "ArmText").rotation + " deg";
     });
   }
+  createjs.Tween.update();
 }
