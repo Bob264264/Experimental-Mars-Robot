@@ -33,6 +33,10 @@ class Arduino():
         for i in pin_numbers:
             self.rotateStepper(i, analog_value)
 
+    def moveArm(self, pin_number, analog_value):
+        command = (''.join(('M', str(pin_number), ':',
+                            str(analog_value)))).encode()
+        self.conn.write(command)
     #Closes connection to Arduino
     def close(self):
         self.conn.close()
