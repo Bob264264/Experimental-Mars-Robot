@@ -26,6 +26,7 @@ Adafruit_StepperMotor *motors[SHINUM * 2] = {};
 char mode; //Holds mode (E for extend actuator, R for rotate stepper motor)
 int pin_number; // Holds the pin number
 float value_to_write; // Holds the value that we want to write
+int armPos1, armPos2;
 
 int getAct(int num){ // 1 < num < 24
   //Convert pin number to adafruit port#
@@ -53,6 +54,7 @@ void setup() {
       motors[(i*2)+1]->setSpeed(STEPSPEED);
     }
     yield();
+    armPos1 = armPos2 = 0;
 }
 
 void loop() {
@@ -65,14 +67,46 @@ void loop() {
         }
         switch (mode){
             case 'E': //Extend actuator
-                ada[pin_number / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
+                ada[(pin_number-1) / 12].setPWM(getAct(pin_number), 0, map(value_to_write, 0, 140, 235, 475));
                 break;
             case 'R': //Rotate stepper motor
                 motors[pin_number-1]->step(value_to_write, FORWARD, DOUBLE);
                 break;
+            case 'M': //Move arm
+                if (value_to_write < 0 || value_to_write > 180){
+                  break;
+                }else{
+                  int temp = armPos1;
+                  armPos1 = value_to_write;
+                  value_to_write -= temp;
+                  
+                  var =  function(value_to_write) //returns direction to spin and time
+                  
+                  if (var < 0){
+                    posNeg = -1;
+                    var = -var;
+                  }else{
+                    posNeg = 1;
+                  }
+                  ada[pin_number-1].setPWM(12, 0, map(posNeg,-1,1,295, 415);
+                  delay(var);
+                }
+                break;
+                
           //Can add more stuff
             default:
                 break;
         }
     }
+    /*
+    if (front limit of front arm is hit){
+      armPos1 = 0;
+    }else if (back limit of front arm is hit){
+      armPos1 = 180;
+    }else if (front limit of back arm is hit){
+      armPos2 = 0;
+    }else if (back limit of back arm is hit){
+      armPos2 = 180;
+    }
+    */
 }
