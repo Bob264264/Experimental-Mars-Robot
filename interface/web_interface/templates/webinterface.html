@@ -45,18 +45,55 @@
         <div class="col s12">
           <div class="card blue lighten-1 darken-1">
             <div class="card-content white-text">
-              <span class="card-title">Automatic Maneuvers</span>
-              <p>
-                <input name="automanuever" type="radio" id="manuever1" />
-                <label for="manuever1">Maneuver type 1</label>
-              </p>
+              <span class="card-title">Arm</span>
+                <form>
+                  <input name="arm" type="text" id="side"  />
+                  <label for="side">Side</label><br>
+
+
+                  <input name="arm" type="text" id="dist" />
+                  <label for="dist">Angle</label>
+
               <div class = "card-action">
-                <a href = "#" id = "do-manuever" class = "light-orange-text text-lighten-3">Perform maneuver</a>
+                <a id = "arm_angle" class = "light-orange-text text-lighten-3" onclick="check()">Send</a>
             </div>
+                  </form>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card blue lighten-1 darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Arm Weight</span>
+              <form>
+                <input name="weight" type="text" id="position_weight"  />
+                <label for="position_weight">Position Set:</label><br>
+                <input name="weight" type="text" id="arm_side"  />
+                <label for="arm_side">Arm Side:</label><br>
+                <div class = "card-action">
+                  <a id = "weight-submit" class = "light-orange-text text-lighten-3" onclick="weight()">Send</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col s12">
+          <div class="card blue lighten-1 darken-1">
+            <div class="card-content white-text">
+              <span class="card-title">Weight Position</span>
+                <p id="weight_position">Left: Middle</p>
+                <p id="weight_position2">Right: Middle</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
     </div>
   </body>
@@ -66,4 +103,51 @@
     <script src = "{{ url_for('static', filename='display.js') }}"></script>
     <script src = "{{ url_for('static', filename='api.js') }}"></script>
   <script src = "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+<script>
+  function check() {
+    var side = $("#side").val();
+    var angle = parseInt($("#dist").val());
+    console.log(side + " " + angle);
+    animation_arm(side, 10, angle);
+  }
+  function weight() {
+    var position = $("#position_weight").val();
+    var side = $("#arm_side").val();
+    console.log(position + " " + side);
+    if(side == "left") {
+      $("#weight_position").val("Left: " + position);
+    }
+    else {
+      $("#weight_position2").val("Right: " + position);
+    }
+  }
+</script>
+
+<script>
+  function animation_arm(side, speed, d) {
+    var container;
+    var degrees = 0;
+    degrees += d;
+    var arm;
+    if(side == "left") {
+      side = "Left";
+      //degrees = degrees;
+      container = stage.getChildByName("LeftArmContainer");
+      arm = "LeftArm";
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+      createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+        container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+      });
+    }
+    else if(side == "right") {
+      side = "Right";
+      container = stage.getChildByName("RightArmContainer");
+      arm = "RightArm";
+      container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+      createjs.Tween.get(container.getChildByName(arm)).to({rotation: degrees}, degrees / speed * 60, createjs.Ease.SineInOut).call(function() {
+        container.getChildByName(side + "ArmText").text = "Arm Rotation: " + degrees + " deg";
+      });
+    }
+  }
+</script>
 </html>

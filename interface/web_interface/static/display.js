@@ -161,7 +161,7 @@ left_arm.graphics
     .beginStroke("black")
     .drawRect(-50, -200, wheeloffset, 100)
     .beginStroke("red")
-    .drawRect(273, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -50 to 273)
+    .drawRect(100, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -50 to 273)
 
 left_armText.name = "LeftArmText";
 left_armText.font = "Roboto";
@@ -200,7 +200,7 @@ right_arm.graphics
     .beginStroke("black")
     .drawRect(-50, -200, wheeloffset, 100)
     .beginStroke("red")
-    .drawRect(-50, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -50 to 273)
+    .drawRect(100, -200, 50, 100); //change first argument with arduino measurement (distance along arm, range from -49 to -371)
 
 right_armText.name = "RightArmText";
 right_armText.font = "Roboto";

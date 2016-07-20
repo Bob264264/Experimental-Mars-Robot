@@ -17,7 +17,7 @@ $("#component-move").click(function() {
 
 					value = value.split("_");
 					if (parseFloat(value[0]) === value[0] && parseFloat(value[0]) === value[1]) {
-						api_spin_motor(component, value[0], value[1]);						
+						api_spin_motor(component, value[0], value[1]);
 					}
 					else {
 						Materialize.toast("Values invalid for motor" + component + " control, try again.", 2000);
