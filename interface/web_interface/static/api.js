@@ -6,20 +6,20 @@ $("#component-move").click(function() {
 	}
 	else {
 		for(i = 0; i < numbers.length; i++) {
-			var component = numbers[i];
+			var component = numbers[i].toLowerCase();
 			var value     = values[i];
 			switch(component.substring(1,2)) {
-				case "M": //wheel motor
+				case "m": //wheel motor
 					if (value.indexOf("_") == -1) {
 						Materialize.toast("Motor " + component + " movement does not have appropriate values.", 2000);
 						break;
 					}
 
 					value = value.split("_");
-					api_spin_motor(component, value[0], value[1]);
+					api_spin_motor(component, parseFloat(value[0]), parseFloat(value[1]));
 					//Materialize.toast("Values invalid for motor " + component + " control, try again.", 2000);
 					break;
-				case "A": //actuator
+				case "a": //actuator
 					if (parseFloat(value) <= 120 && parseFloat(value) >= 0) {
 						api_set_actuator(component, value);
 					}
@@ -27,9 +27,9 @@ $("#component-move").click(function() {
 						Materialize.toast("Value invalid for actuator " + component + " control, try again.", 2000);
 					}
 					break;
-				case "P": //pulley
+				case "p": //pulley
 					break;
-				case "R": //arrrrrm
+				case "r": //arrrrrm
 			}
 		}
 	}

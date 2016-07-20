@@ -215,13 +215,13 @@ stage.addChild(main_container);
 stage.addChild(left_arm_container);
 stage.addChild(right_arm_container);
 
-createjs.Ticker.addEventListener("tick", stage);
+stage.update();
 
 function animation_spin_motor(motor_name, speed, degrees) {
 
   var wheel;
   var side_container;
-  var side_container_type = (motor_name.substring(0,1) == "L") ? "Left" : "Right";
+  var side_container_type = (motor_name.substring(0,1) == "l") ? "Left" : "Right";
   var wheelType           = (motor_name.substring(2,3) == "1") ? "Front" : "Back";
 
   if (side_container_type == "Left") {
@@ -244,27 +244,45 @@ function animation_spin_motor(motor_name, speed, degrees) {
       wheel          = side_container.getChildByName("BackWheel");
     }
   }
-  side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": " + speed.toString() + " rpm" + "\n" + "Rotation: " + wheel.rotation + "deg";
 
-  createjs.Tween.get(wheel, {override: true}).to({rotation: degrees}, 60.0 * degrees / speed).call(function() {
-      side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": 0 rpm" + "\n" + "Rotation: " + degrees.toString() + "deg";
-      this.setPaused(true); 
-  });
-  createjs.Tween.update();
+  dt = 33; //30 fps
+  original_rotation = parseFloat(wheel.rotation);
+  var animation = setInterval(function() {
+    if (Math.abs(parseFloat(wheel.rotation) - original_rotation) <= degrees) {
+      wheel.rotation += dt * speed / 1000 / 60 * 360;
+      side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": " + speed.toFixed(2) + " rpm" + "\n" + "Rotation: " + wheel.rotation.toFixed(2) + "deg";
+    }
+    else {
+      side_container.getChildByName(wheelType + "WheelText").text = "Wheel Motor " + motor_name + ": 0 rpm" + "\n" + "Rotation: " + (original_rotation + degrees).toFixed(2) + "deg";
+      clearInterval(animation);
+    }
+    stage.update();
+  }, dt);
 }
 
-var ACTUATOR_EXTENSION_SPEED = 0.1; //Remains to be revised via trial and error
+var ACTUATOR_EXTENSION_SPEED = 0.00252525; //mm/sec: Remains to be revised via trial and error
 function animation_set_actuator(actuator_label, amount) {
-  var side         = (actuator_label.substring(0,1) == "L") ? "Left" : "Right";
+
+  amount = parseFloat(amount);
+
+  var side         = (actuator_label.substring(0,1) == "l") ? "Left" : "Right";
   var wheel        = (actuator_label.substring(2,3) == "1") ? "Front" : "Back";
   var actuator_num = actuator_label.substring(3,4);
 
-  var actuator = main_container.getChildByName("Side:" + side).getChildByName(wheel + "Wheel").getChildByName(actuator_label);
+  var actuator = main_container.getChildByName("Side:" + side).getChildByName(wheel + "Wheel").getChildByName(actuator_label.toUpperCase());
 
-  createjs.Tween.get(actuator, {override: true}).to({extension : amount}, amount / ACTUATOR_EXTENSION_SPEED).on("change", function (){
-    actuator.text = actuator.extension.toString() + " mm";
-  });
-  createjs.Tween.update();
+  dt = 33; //30 fps
+  var animation = setInterval(function() {
+    if (Math.abs(actuator.extension - amount) > 0.5) {
+      actuator.extension += ACTUATOR_EXTENSION_SPEED * dt;
+    }
+    else {
+      actuator.extension = amount;
+      clearInterval(animation);
+    }
+    actuator.text = actuator.extension.toFixed(1) + " mm";
+    stage.update();
+  }, dt);
 }
 
 function animation_arm(side, speed, d) {
@@ -289,5 +307,5 @@ function animation_arm(side, speed, d) {
       container.getChildByName(side + "ArmText").text = "Arm Rotation: " + container.getChildByName(side + "ArmText").rotation + " deg";
     });
   }
-  createjs.Tween.update();
+  createjs.Tween.removeAllTweens();
 }
